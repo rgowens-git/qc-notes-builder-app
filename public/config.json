@@ -1,0 +1,325 @@
+{
+  "meta": {
+    "title": "QC Note Builder",
+    "subtitle": "Build semicolon-ready review notes from a flexible set of sections, then tune the config without touching the code.",
+    "storageKey": "qc-notes-builder-config-v2"
+  },
+  "sections": [
+    {
+      "id": "domain-match",
+      "label": "Domain Match",
+      "type": "single",
+      "required": true,
+      "includeLabelInStructuredText": false,
+      "helper": "Choose the closest fit for the task's domain.",
+      "options": [
+        {
+          "id": "domain-match",
+          "label": "Domain Match",
+          "note": "The task is a strong match for the expected domain."
+        },
+        {
+          "id": "adjacent-domain",
+          "label": "Adjacent Domain",
+          "note": "The task is close to the expected domain, but not a precise match."
+        },
+        {
+          "id": "domain-mismatch",
+          "label": "Domain Mismatch",
+          "note": "The task does not align with the expected domain."
+        }
+      ]
+    },
+    {
+      "id": "domain-knowledge",
+      "label": "Domain Knowledge",
+      "type": "single",
+      "required": true,
+      "helper": "Rate the level of domain understanding shown in the review.",
+      "options": [
+        {
+          "id": "excellent",
+          "label": "Excellent",
+          "note": "The review demonstrates excellent domain knowledge."
+        },
+        {
+          "id": "appropriate",
+          "label": "Appropriate",
+          "note": "The review demonstrates appropriate domain knowledge."
+        },
+        {
+          "id": "passable",
+          "label": "Passable",
+          "note": "The review demonstrates passable domain knowledge."
+        },
+        {
+          "id": "insufficient",
+          "label": "Insufficient",
+          "note": "The review demonstrates insufficient domain knowledge."
+        }
+      ]
+    },
+    {
+      "id": "scoring",
+      "label": "Scoring",
+      "type": "single",
+      "required": true,
+      "helper": "Note how well the score tracks with the rationale.",
+      "options": [
+        {
+          "id": "scoring-aligns",
+          "label": "Scoring aligns with rationale",
+          "note": "The scoring aligns with the rationale."
+        },
+        {
+          "id": "minor-rationale-scoring-issue",
+          "label": "Minor rationale and scoring issue",
+          "note": "There is a minor issue between the rationale and the scoring."
+        },
+        {
+          "id": "scoring-does-not-align",
+          "label": "Scoring does not align with rationale",
+          "note": "The scoring does not align with the rationale."
+        },
+        {
+          "id": "scoring-not-grounded",
+          "label": "Scoring not grounded in guidelines",
+          "note": "The scoring is not grounded in the guidelines."
+        }
+      ]
+    },
+    {
+      "id": "evidence-quality",
+      "label": "Evidence Quality",
+      "type": "single",
+      "required": true,
+      "helper": "Choose the best description of evidence usage.",
+      "options": [
+        {
+          "id": "strong-concrete-evidence",
+          "label": "Strong use of concrete evidence",
+          "note": "The rationale uses strong, concrete evidence."
+        },
+        {
+          "id": "adequate-evidence-cited",
+          "label": "Adequate evidence cited",
+          "note": "The rationale cites adequate evidence."
+        },
+        {
+          "id": "limited-evidence-cited",
+          "label": "Limited evidence cited",
+          "note": "The rationale cites limited evidence."
+        },
+        {
+          "id": "does-not-cite-evidence-examples",
+          "label": "Does not cite evidence / examples",
+          "note": "The rationale does not cite evidence or examples."
+        }
+      ]
+    },
+    {
+      "id": "rationales",
+      "label": "Rationales",
+      "type": "multi",
+      "required": true,
+      "helper": "Capture the best description of the rationale quality.",
+      "options": [
+        {
+          "id": "concise-bullets",
+          "label": "Concise Bullets",
+          "note": "The rationale is concise and easy to scan."
+        },
+        {
+          "id": "well-written",
+          "label": "Well Written",
+          "note": "The rationale is well written and easy to understand."
+        },
+        {
+          "id": "adequate",
+          "label": "Adequate",
+          "note": "The rationale is adequate, though it could be stronger."
+        },
+        {
+          "id": "too-verbose",
+          "label": "Too Verbose",
+          "note": "The rationale is more verbose than necessary."
+        },
+        {
+          "id": "shallow-rationales",
+          "label": "Shallow Rationales",
+          "note": "The rationale lacks depth and specificity."
+        },
+        {
+          "id": "unclear-difficult-to-follow",
+          "label": "Unclear / Difficult to Follow",
+          "note": "The rationale is difficult to follow."
+        },
+        {
+          "id": "dimensional-bleed-rationale",
+          "label": "Dimensional bleed",
+          "note": "The rationale mixes dimensions in a way that blurs the scoring basis."
+        }
+      ]
+    },
+    {
+      "id": "strengths",
+      "label": "Strengths",
+      "type": "multi",
+      "required": false,
+      "helper": "Pick every strength you want reflected in the note.",
+      "options": [
+        {
+          "id": "specific-examples",
+          "label": "Specific examples / evidence used",
+          "note": "Specific examples or evidence were used effectively."
+        },
+        {
+          "id": "complete-criteria-coverage",
+          "label": "Complete criteria coverage",
+          "note": "The rationale covered the criteria completely."
+        },
+        {
+          "id": "sif-applied-correctly",
+          "label": "SIF applied correctly",
+          "note": "SIF expectations were applied correctly."
+        }
+      ]
+    },
+    {
+      "id": "rewrite-scope",
+      "label": "Rewrite Scope",
+      "type": "single",
+      "required": true,
+      "helper": "Capture the level of rewrite effort required.",
+      "options": [
+        {
+          "id": "none",
+          "label": "None",
+          "note": "No rewrite is needed."
+        },
+        {
+          "id": "minor-rewrite-needed",
+          "label": "Minor Rewrite Needed",
+          "note": "A minor rewrite is needed."
+        },
+        {
+          "id": "complete-rewrite-needed",
+          "label": "Complete Rewrite Needed",
+          "note": "A complete rewrite is needed."
+        },
+        {
+          "id": "sif-criteria-rewrite-only",
+          "label": "SIF Criteria Rewrite Only",
+          "note": "Only the SIF criteria portion needs a rewrite."
+        }
+      ]
+    },
+    {
+      "id": "areas-for-improvement",
+      "label": "Areas for Improvement",
+      "type": "multi",
+      "required": false,
+      "helper": "Mark every issue that should appear in the note.",
+      "options": [
+        {
+          "id": "does-not-cite-evidence",
+          "label": "Does Not Cite Evidence / Examples",
+          "note": "The rationale does not cite evidence or examples."
+        },
+        {
+          "id": "criteria-missing",
+          "label": "Criteria Missing",
+          "note": "Important criteria are missing from the rationale."
+        },
+        {
+          "id": "sif-criteria-missing",
+          "label": "SIF Criteria Missing",
+          "note": "Relevant SIF criteria are missing."
+        },
+        {
+          "id": "scores-ranking-misaligned",
+          "label": "Scores and Ranking Misaligned",
+          "note": "The scores or ranking do not align with the rationale."
+        }
+      ]
+    },
+    {
+      "id": "affected-dimensions",
+      "label": "Affected Dimensions",
+      "type": "multi",
+      "required": false,
+      "helper": "Use this when the issues map to specific dimensions.",
+      "options": [
+        {
+          "id": "content-quality",
+          "label": "Content Quality",
+          "note": "Content Quality is affected."
+        },
+        {
+          "id": "storytelling",
+          "label": "Storytelling",
+          "note": "Storytelling is affected."
+        },
+        {
+          "id": "aesthetics",
+          "label": "Aesthetics",
+          "note": "Aesthetics are affected."
+        },
+        {
+          "id": "layout",
+          "label": "Layout",
+          "note": "Layout is affected."
+        },
+        {
+          "id": "editability",
+          "label": "Editability",
+          "note": "Editability is affected."
+        },
+        {
+          "id": "overall-score",
+          "label": "Overall Score",
+          "note": "The Overall Score is affected."
+        },
+        {
+          "id": "overall-ranking",
+          "label": "Overall Ranking",
+          "note": "The Overall Ranking is affected."
+        }
+      ]
+    },
+    {
+      "id": "qc-outcome",
+      "label": "QC Outcome",
+      "type": "multi",
+      "required": true,
+      "helper": "Choose the overall QC outcome.",
+      "options": [
+        {
+          "id": "pass",
+          "label": "Pass",
+          "note": "QC outcome is Pass."
+        },
+        {
+          "id": "pass-with-minor-issues",
+          "label": "Pass with Minor Issues",
+          "note": "QC outcome is Pass with Minor Issues."
+        },
+        {
+          "id": "minor-rewrite-required",
+          "label": "Minor Rewrite Required",
+          "note": "QC outcome is Minor Rewrite Required."
+        },
+        {
+          "id": "complete-rewrite-required",
+          "label": "Complete Rewrite Required",
+          "note": "QC outcome is Complete Rewrite Required."
+        },
+        {
+          "id": "pai",
+          "label": "PAI",
+          "note": "QC outcome is PAI."
+        }
+      ]
+    }
+  ]
+}
