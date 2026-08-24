@@ -64,6 +64,7 @@
       "label": "Scoring",
       "type": "single",
       "required": true,
+      "includeLabelInStructuredText": false,
       "helper": "Note how well the score tracks with the rationale.",
       "options": [
         {
@@ -93,6 +94,7 @@
       "label": "Evidence Quality",
       "type": "single",
       "required": true,
+      "includeLabelInStructuredText": false,
       "helper": "Choose the best description of evidence usage.",
       "options": [
         {
@@ -190,12 +192,13 @@
       "label": "Rewrite Scope",
       "type": "single",
       "required": true,
+      "includeLabelInStructuredText": false,
       "helper": "Capture the level of rewrite effort required.",
       "options": [
         {
           "id": "none",
-          "label": "None",
-          "note": "No rewrite is needed."
+          "label": "No Rewrite Required",
+          "note": "No rewrite is required."
         },
         {
           "id": "minor-rewrite-needed",
