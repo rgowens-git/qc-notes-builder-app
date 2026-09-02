@@ -16,17 +16,17 @@
         {
           "id": "domain-match",
           "label": "Domain Match",
-          "note": "The task is a strong match for the expected domain."
+          "note": "The evaluator's domains are a match."
         },
         {
           "id": "adjacent-domain",
           "label": "Adjacent Domain",
-          "note": "The task is close to the expected domain, but not a precise match."
+          "note": "The task is included in the evaluator's additionally approved domains "
         },
         {
           "id": "domain-mismatch",
           "label": "Domain Mismatch",
-          "note": "The task does not align with the expected domain."
+          "note": "The task is not included in the evaluator's approved domains."
         }
       ]
     },
@@ -35,27 +35,28 @@
       "label": "Domain Knowledge",
       "type": "single",
       "required": true,
+      "includeLabelInStructuredText": true,
       "helper": "Rate the level of domain understanding shown in the review.",
       "options": [
         {
           "id": "excellent",
           "label": "Excellent",
-          "note": "The review demonstrates excellent domain knowledge."
+          "note": "The evaluation demonstrates excellent domain knowledge."
         },
         {
           "id": "appropriate",
           "label": "Appropriate",
-          "note": "The review demonstrates appropriate domain knowledge."
+          "note": "The evaluation demonstrates appropriate domain knowledge."
         },
         {
           "id": "passable",
           "label": "Passable",
-          "note": "The review demonstrates passable domain knowledge."
+          "note": "The evaluation demonstrates passable domain knowledge."
         },
         {
           "id": "insufficient",
           "label": "Insufficient",
-          "note": "The review demonstrates insufficient domain knowledge."
+          "note": "The evaluation demonstrates insufficient domain knowledge."
         }
       ]
     },
@@ -70,17 +71,17 @@
         {
           "id": "scoring-aligns",
           "label": "Scoring aligns with rationale",
-          "note": "The scoring aligns with the rationale."
+          "note": "The scoring aligns with the rationales."
         },
         {
           "id": "minor-rationale-scoring-issue",
           "label": "Minor rationale and scoring issue",
-          "note": "There is a minor issue between the rationale and the scoring."
+          "note": "There is a minor issue between the rationales and the scoring."
         },
         {
           "id": "scoring-does-not-align",
           "label": "Scoring does not align with rationale",
-          "note": "The scoring does not align with the rationale."
+          "note": "The scoring does not align with the rationales."
         },
         {
           "id": "scoring-not-grounded",
@@ -124,6 +125,7 @@
       "label": "Rationales",
       "type": "multi",
       "required": true,
+      "includeLabelInStructuredText": true,
       "helper": "Capture the best description of the rationale quality.",
       "options": [
         {
@@ -168,6 +170,7 @@
       "label": "Strengths",
       "type": "multi",
       "required": false,
+      "includeLabelInStructuredText": true,
       "helper": "Pick every strength you want reflected in the note.",
       "options": [
         {
@@ -222,6 +225,7 @@
       "label": "Areas for Improvement",
       "type": "multi",
       "required": false,
+      "includeLabelInStructuredText": true,
       "helper": "Mark every issue that should appear in the note.",
       "options": [
         {
@@ -251,6 +255,7 @@
       "label": "Affected Dimensions",
       "type": "multi",
       "required": false,
+      "includeLabelInStructuredText": true,
       "helper": "Use this when the issues map to specific dimensions.",
       "options": [
         {
@@ -295,6 +300,7 @@
       "label": "QC Outcome",
       "type": "multi",
       "required": true,
+      "includeLabelInStructuredText": true,
       "helper": "Choose the overall QC outcome.",
       "options": [
         {
