@@ -231,7 +231,7 @@ function copyWithFallback(text) {
   });
 }
 
-export default function App() {
+function NotesBuilder() {
   const importRef = useRef(null);
   const [layoutMode, setLayoutMode] = useState(() => {
     if (typeof window === "undefined") {
@@ -1016,5 +1016,566 @@ export default function App() {
         </section>
       </details>
     </main>
+  );
+}
+
+const TASK_REVIEW_TEMPLATES = {
+  docs: {
+    label: "Docs",
+    description: "Review document content, writing quality, aesthetics, and real-world usability.",
+    sections: [
+      {
+        title: "Content Quality",
+        checks: [
+          "Instruction following",
+          "AI slop",
+          "Writing quality",
+          "Organization and storytelling",
+          "Comprehensiveness and substance",
+          "Groundedness and accuracy",
+        ],
+      },
+      {
+        title: "Professional Writing Failure Modes",
+        checks: [
+          "Formulaic, slogan-like, or figurative language",
+          "Vague, inflated, or unsupported substance",
+          "Wordy, jargon-filled, or indirect language",
+          "Unnecessary framing, repetition, or structure",
+        ],
+      },
+      {
+        title: "Aesthetics",
+        checks: ["Visual defects (P0)", "Overstyling (P1)", "Readability (P2)"],
+      },
+      {
+        title: "Overall",
+        checks: [
+          "Overall scores align with dimensional scores",
+          "Document is of good quality",
+          "Document is ready for real-world use",
+          "All key components are editable",
+          "Document is appropriate for the intended audience",
+          "Amount of revision required is accurately reflected",
+          "Weaknesses that limit usability are identified",
+        ],
+      },
+    ],
+  },
+  sheets: {
+    label: "Sheets",
+    description: "Review workbook correctness, layout, formulas, visual styling, and maintainability.",
+    sections: [
+      {
+        title: "Correctness",
+        checks: [
+          "Instruction following",
+          "Correct calculations, formulas, and logic",
+          "Written content quality",
+          "AI slop",
+          "Accurate use of source material",
+          "Appropriate assumptions",
+          "No unsupported conclusions",
+          "No misleading or irrelevant content",
+        ],
+      },
+      {
+        title: "Layout",
+        checks: [
+          "Raw data, assumptions, calculations, and outputs are clearly separated",
+          "Inputs, outputs, tables, and charts are placed where users expect them",
+          "Logical tab order and sheet names",
+          "Headers make sections easy to understand",
+          "Clear flow from source data to result",
+          "No clutter, hidden critical information, or confusing navigation",
+        ],
+      },
+      {
+        title: "Formula Usage",
+        checks: [
+          "Formulas are used instead of hardcoded results",
+          "No magic numbers embedded directly in formulas",
+          "Absolute and relative references work when copied",
+          "Comparable ranges use consistent formulas",
+          "Named ranges, helper columns, or tables are used when useful",
+          "No broken references, circular references, or avoidable errors",
+        ],
+      },
+      {
+        title: "Style and Aesthetics",
+        checks: [
+          "Appropriate number formats",
+          "Clear header styling and hierarchy",
+          "Readable fonts and text sizes",
+          "Useful borders, fills, and gridline choices",
+          "Sensible row heights and column widths",
+          "Consistent color scheme",
+          "Charts and dashboards are legible and consistent",
+          "Polished without unnecessary decoration",
+        ],
+      },
+      {
+        title: "Overall",
+        checks: [
+          "Overall scores align with dimensional scores",
+          "Workbook is of good quality",
+          "Workbook is ready for real-world use",
+          "Workbook outputs can be trusted",
+          "Workbook can be maintained",
+          "Revision required before use is accurately reflected",
+          "Weaknesses that limit usability are identified",
+        ],
+      },
+    ],
+  },
+  slides: {
+    label: "Slides",
+    description: "Review presentation content, narrative, visual craft, layout, and editability.",
+    sections: [
+      {
+        title: "Content Quality",
+        checks: [
+          "Instruction following",
+          "Content usefulness and coverage of concepts",
+          "AI slop",
+          "Accuracy and faithfulness",
+          "No incorrect or irrelevant additions",
+          "No misleading omissions",
+        ],
+        sif: [
+          "Deck follows template or brand instructions",
+          "Required visual elements are present",
+          "Reference style is applied to content",
+          "Required sections are included",
+          "Template placeholders are updated",
+          "Design meets prompt intent",
+        ],
+      },
+      {
+        title: "Storytelling",
+        checks: [
+          "Clear structure and progression",
+          "Good transitions between slides",
+          "Logical or emotional buildup",
+          "A sense of purpose and momentum",
+          "Deck feels engaging rather than list-like",
+        ],
+        sif: [
+          "Template narrative structure is used",
+          "Visual elements connect sections",
+          "Style supports the intended tone",
+          "Visual hierarchy creates emphasis",
+          "Section dividers and visual elements assist with flow",
+        ],
+      },
+      {
+        title: "Aesthetics",
+        checks: [
+          "Consistency across the deck",
+          "Typography quality and hierarchy",
+          "Color use and visual harmony",
+          "Enough visual variety to stay engaging",
+          "Quality of visual elements",
+          "Appropriate font choice",
+          "Provided template aesthetics were followed",
+        ],
+        sif: [
+          "Adaptations remain recognizable as part of the design",
+          "New components fit the design reference",
+          "Deck design feels intentional and not template-like",
+          "Branding is integrated into the content",
+        ],
+      },
+      {
+        title: "Layout",
+        checks: [
+          "Spacing and margins",
+          "Alignment",
+          "Grouping of related elements",
+          "Clear visual hierarchy",
+          "No clutter or overlap",
+          "Slides are easy to scan",
+          "Provided template aesthetics were followed",
+        ],
+        sif: [
+          "Content is adapted to fit the layout",
+          "Repeated elements are consistent",
+          "Template components are adapted thoughtfully",
+          "Layout is consistent with the reference template",
+        ],
+      },
+      {
+        title: "Editability",
+        checks: [
+          "Master template exists and was used",
+          "Native PowerPoint elements are used",
+          "Elements are movable and editable",
+          "Full-slide images are avoided",
+          "Deck is practical for real edits",
+        ],
+      },
+      {
+        title: "Overall",
+        checks: [
+          "Overall scores align with dimensional scores",
+          "Deck is ready for real-world use",
+          "I would be confident presenting or sharing it as-is",
+          "Deck feels cohesive and purposeful",
+          "Effort required to reach a high standard is accurately reflected",
+          "No major weakness undermines the deck",
+        ],
+        sif: [
+          "Response follows the required style and template",
+          "Style is adapted thoughtfully to the content",
+          "Deck is polished, effective, and editable",
+          "Little or no revision is required before use",
+        ],
+      },
+    ],
+  },
+};
+
+const SHARED_REVIEW_GROUPS = [
+  {
+    title: "Grounding Checks",
+    checks: [
+      "Verified Corrupt Files selections",
+      "Prompt was addressed",
+      "AI Slop included in Rationales",
+      "PAI indicators were checked",
+    ],
+  },
+  {
+    title: "Rationale Quality Verification",
+    checks: [
+      "Bullets are concise and specific",
+      "Bullets are in the correct dimension",
+      "Concrete evidence was provided",
+    ],
+  },
+  {
+    title: "Scoring Verification",
+    checks: [
+      "High and low scores are supported, especially 1s, 2s, 6s, and 7s",
+      "Mid-scores include both positives and negatives",
+    ],
+  },
+];
+
+function CommentField({ label, value, onChange, placeholder }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copyComment() {
+    if (!value.trim()) return;
+    await copyWithFallback(value);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  }
+
+  return (
+    <div className="review-comments">
+      <div className="review-comments__header">
+        <span>{label}</span>
+        <button className="comment-copy-button" type="button" onClick={copyComment} disabled={!value.trim()} aria-label={`Copy ${label}`} title={`Copy ${label}`}>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          <span>{copied ? "Copied" : "Copy"}</span>
+        </button>
+      </div>
+      <textarea aria-label={label} value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} />
+    </div>
+  );
+}
+
+function ReviewChecklist({ title, checks, sif, responseId, values, onToggle, comments, onComments, score, onScore, leadingContent, footerContent }) {
+  return (
+    <section className="review-card">
+      <div className="review-card__heading">
+        <h3>{title}</h3>
+        {onScore ? (
+          <label className="score-field">
+            <span>Score</span>
+            <input aria-label={`${title} score`} value={score} onChange={(event) => onScore(event.target.value)} placeholder="1–7" />
+          </label>
+        ) : null}
+      </div>
+      {leadingContent}
+      <div className="review-check-grid">
+        {checks.map((check) => {
+          const key = `${responseId}:${title}:${check}`;
+          return (
+            <label className="review-check" key={check}>
+              <input type="checkbox" checked={Boolean(values[key])} onChange={() => onToggle(key)} />
+              <span>{check}</span>
+            </label>
+          );
+        })}
+      </div>
+      {sif?.length ? (
+        <div className="sif-group">
+          <p className="sif-group__label">SIF checks</p>
+          <div className="review-check-grid">
+            {sif.map((check) => {
+              const key = `${responseId}:${title}:SIF:${check}`;
+              return (
+                <label className="review-check" key={check}>
+                  <input type="checkbox" checked={Boolean(values[key])} onChange={() => onToggle(key)} />
+                  <span>{check}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+      {onComments ? (
+        <CommentField label={`${title} comments`} value={comments} onChange={onComments} placeholder={`Add evidence and actionable ${title.toLowerCase()} feedback…`} />
+      ) : null}
+      {footerContent}
+    </section>
+  );
+}
+
+function TaskReviews() {
+  const [templateId, setTemplateId] = useState("docs");
+  const [responseCount, setResponseCount] = useState(3);
+  const [sifRequired, setSifRequired] = useState(false);
+  const [activeResponse, setActiveResponse] = useState("A");
+  const [details, setDetails] = useState({ taskUrl: "", batch: "", evaluator: "", reviewer: "", reviewDate: "", domainMatch: "" });
+  const [checks, setChecks] = useState({});
+  const [comments, setComments] = useState({});
+  const [scores, setScores] = useState({});
+  const [ranking, setRanking] = useState("");
+  const [rankingComments, setRankingComments] = useState("");
+  const [copyStatus, setCopyStatus] = useState("");
+  const [copiedResponse, setCopiedResponse] = useState("");
+  const [clearedReview, setClearedReview] = useState(null);
+  const template = TASK_REVIEW_TEMPLATES[templateId];
+  const responseLabels = Array.from(
+    { length: responseCount },
+    (_, index) => String.fromCharCode(65 + index),
+  );
+
+  function changeResponseCount(value) {
+    const nextCount = Number(value);
+    const nextLabels = Array.from(
+      { length: nextCount },
+      (_, index) => String.fromCharCode(65 + index),
+    );
+    setResponseCount(nextCount);
+    if (!nextLabels.includes(activeResponse)) {
+      setActiveResponse(nextLabels[nextLabels.length - 1]);
+    }
+  }
+
+  function toggleCheck(key) {
+    setChecks((current) => ({ ...current, [key]: !current[key] }));
+  }
+
+  function resetReview() {
+    setClearedReview({ checks, comments, scores, ranking, rankingComments });
+    setChecks({});
+    setComments({});
+    setScores({});
+    setRanking("");
+    setRankingComments("");
+    setCopiedResponse("");
+    setCopyStatus("Review cleared.");
+  }
+
+  function undoClearReview() {
+    if (!clearedReview) return;
+    setChecks(clearedReview.checks);
+    setComments(clearedReview.comments);
+    setScores(clearedReview.scores);
+    setRanking(clearedReview.ranking);
+    setRankingComments(clearedReview.rankingComments);
+    setClearedReview(null);
+    setCopyStatus("Review restored.");
+  }
+
+  function buildResponseReviewText(response) {
+    const lines = [`Response ${response}`];
+    template.sections.forEach((section) => {
+      const selected = [...section.checks, ...(sifRequired ? section.sif || [] : [])].filter((check) =>
+        Object.entries(checks).some(([key, value]) => value && key.startsWith(`${response}:${section.title}:`) && key.endsWith(check)),
+      );
+      lines.push(`${section.title}${scores[`${response}:${section.title}`] ? ` (${scores[`${response}:${section.title}`]}/7)` : ""}: ${selected.length ? selected.join("; ") : "No checks selected"}`);
+      if (comments[`${response}:${section.title}`]) lines.push(`Comments: ${comments[`${response}:${section.title}`]}`);
+    });
+    return lines.join("\n");
+  }
+
+  function buildReviewText() {
+    const lines = [
+      `${template.label} Task Review`,
+      `Task URL: ${details.taskUrl || "—"}`,
+      `Batch: ${details.batch || "—"}`,
+      `Evaluator: ${details.evaluator || "—"}`,
+      `Reviewer: ${details.reviewer || "—"}`,
+      `Review Date: ${details.reviewDate || "—"}`,
+      `Domain Match: ${details.domainMatch || "—"}`,
+      `SIF Requirements: ${sifRequired ? "Yes" : "No"}`,
+    ];
+    responseLabels.forEach((response) => {
+      lines.push(`\n${buildResponseReviewText(response)}`);
+    });
+    lines.push(`\nOverall Ranking: ${ranking || "—"}`, `Ranking Comments: ${rankingComments || "—"}`);
+    return lines.join("\n");
+  }
+
+  async function copyReview() {
+    await copyWithFallback(buildReviewText());
+    setCopyStatus("Task review copied.");
+  }
+
+  async function copyResponseReview(response) {
+    await copyWithFallback(buildResponseReviewText(response));
+    setCopiedResponse(response);
+    window.setTimeout(() => setCopiedResponse(""), 1800);
+  }
+
+  return (
+    <main className="task-review-shell">
+      <section className="task-review-hero">
+        <div>
+          <p className="eyebrow">Artifact verification</p>
+          <h1>Task Review Builder</h1>
+          <p>Use this review to spot critical submission blockers and give evaluators clear, actionable calibration feedback.</p>
+        </div>
+        <div className="benchmark-card"><strong>20 min</strong><span>benchmark for 3 reviews</span></div>
+      </section>
+
+      <section className="shared-review-panel">
+        <div className="shared-review-panel__intro">
+          <div>
+            <p className="eyebrow">Shared review details</p>
+            <h2>Task information and quick verification</h2>
+          </div>
+        </div>
+        <div className="review-detail-grid">
+          {[
+            ["taskUrl", "Task URL", "url"], ["batch", "Batch", "text"], ["evaluator", "Evaluator", "text"],
+            ["reviewer", "Reviewer", "text"], ["reviewDate", "Review Date", "date"],
+          ].map(([key, label, type]) => (
+            <label className="review-field" key={key}><span>{label}</span><input type={type} value={details[key]} onChange={(event) => setDetails((current) => ({ ...current, [key]: event.target.value }))} /></label>
+          ))}
+        </div>
+        <div className="shared-check-grid">
+          {SHARED_REVIEW_GROUPS.map((group) => {
+            const domainMatchField = group.title === "Grounding Checks" ? (
+                <label className="domain-match-select">
+                  <span>Domain Match</span>
+                  <select value={details.domainMatch} onChange={(event) => setDetails((current) => ({ ...current, domainMatch: event.target.value }))}>
+                    <option value="">Select an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unable to verify">Unable to verify</option>
+                  </select>
+                </label>
+            ) : null;
+            return <ReviewChecklist key={group.title} title={group.title} checks={group.checks} responseId="shared" values={checks} onToggle={toggleCheck} leadingContent={domainMatchField} />;
+          })}
+        </div>
+      </section>
+
+      <section className="template-panel">
+        <div className="template-panel__intro">
+          <p className="eyebrow">Choose a template</p>
+          <h2>What type of artifact are you reviewing?</h2>
+          <div className="template-settings">
+            <label className="response-count-field">
+              <span>Number of Responses</span>
+              <select value={responseCount} onChange={(event) => changeResponseCount(event.target.value)}>
+                {[2, 3, 4, 5, 6, 7, 8].map((count) => (
+                  <option key={count} value={count}>{count}</option>
+                ))}
+              </select>
+            </label>
+            <label className="response-count-field">
+              <span>SIF Requirements</span>
+              <select value={sifRequired ? "Yes" : "No"} onChange={(event) => setSifRequired(event.target.value === "Yes")}>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div className="template-selector" role="radiogroup" aria-label="Task review template">
+          {Object.entries(TASK_REVIEW_TEMPLATES).map(([id, item]) => (
+            <button className={`template-option${templateId === id ? " template-option--active" : ""}`} aria-pressed={templateId === id} key={id} onClick={() => setTemplateId(id)} type="button">
+              <span className="template-option__icon">{id === "docs" ? "D" : id === "sheets" ? "S" : "P"}</span>
+              <span><strong>{item.label}</strong><small>{item.description}</small></span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="response-panel">
+        <div className="response-panel__top">
+          <div><p className="eyebrow">{template.label} review</p><h2>Response {activeResponse}</h2></div>
+          <div className="response-tabs" role="tablist" aria-label="Response selection">
+            {responseLabels.map((response) => <button className={activeResponse === response ? "response-tab response-tab--active" : "response-tab"} onClick={() => setActiveResponse(response)} key={response} type="button">Response {response}</button>)}
+          </div>
+        </div>
+        <div className="response-sections">
+          {template.sections.map((section) => {
+            const key = `${activeResponse}:${section.title}`;
+            const copyButton = section.title === "Overall" ? (
+              <div className="response-copy-footer">
+                <button className="button button--primary response-copy-button" onClick={() => copyResponseReview(activeResponse)} type="button">
+                  {copiedResponse === activeResponse ? "Response Review Copied" : "Copy Response Review"}
+                </button>
+                <p>This can be pasted into a single comment in Feather to provide feedback for the evaluator.</p>
+              </div>
+            ) : null;
+            return <ReviewChecklist key={section.title} {...section} sif={sifRequired ? section.sif : undefined} responseId={activeResponse} values={checks} onToggle={toggleCheck} comments={comments[key] || ""} onComments={(value) => setComments((current) => ({ ...current, [key]: value }))} score={scores[key] || ""} onScore={(value) => setScores((current) => ({ ...current, [key]: value }))} footerContent={copyButton} />;
+          })}
+        </div>
+      </section>
+
+      <section className="ranking-panel">
+        <div><p className="eyebrow">Close out</p><h2>Overall Ranking</h2></div>
+        <div className="ranking-grid">
+          <label className="review-field"><span>Ranking order</span><input value={ranking} onChange={(event) => setRanking(event.target.value)} placeholder={`e.g. ${[...responseLabels].reverse().join(" > ")}`} /></label>
+          <CommentField label="Overall ranking comments" value={rankingComments} onChange={setRankingComments} placeholder="Explain placement, close calls, and evidence from the response rationales…" />
+        </div>
+        <div className="ranking-checks">
+          {["Rankings are consistent with overall scores", "Ranking rationale justifies placement", "Ties or close calls are described", "Evidence from response rationales is cited"].map((check) => {
+            const key = `ranking:${check}`;
+            return <label className="review-check" key={check}><input type="checkbox" checked={Boolean(checks[key])} onChange={() => toggleCheck(key)} /><span>{check}</span></label>;
+          })}
+        </div>
+        <div className="review-actions">
+          <div className="task-copy-action">
+            <button className="button button--primary" onClick={copyReview} type="button">Copy Task Review</button>
+            <p>This can be pasted into Slack for feedback to the evaluator.</p>
+          </div>
+          <div className="clear-review-action">
+            <button className="button button--ghost clear-review-button" onClick={resetReview} type="button">Clear Review</button>
+          </div>
+          {copyStatus ? (
+            <div className="review-status-row">
+              <span className="review-status">{copyStatus}</span>
+              {clearedReview ? <button className="undo-clear-button" onClick={undoClearReview} type="button">Undo Clear</button> : null}
+            </div>
+          ) : null}
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default function App() {
+  const [page, setPage] = useState("reviews");
+  return (
+    <>
+      <nav className="app-nav" aria-label="Application sections">
+        <div className="app-nav__brand"><span className="app-nav__mark">QC</span><span><strong>Quality Control</strong><small>Review workspace</small></span></div>
+        <div className="app-nav__links">
+          <button className={page === "reviews" ? "app-nav__link app-nav__link--active" : "app-nav__link"} onClick={() => setPage("reviews")} type="button">Task Reviews</button>
+          <button className={page === "notes" ? "app-nav__link app-nav__link--active" : "app-nav__link"} onClick={() => setPage("notes")} type="button">QC Notes</button>
+        </div>
+      </nav>
+      {page === "notes" ? <NotesBuilder /> : <TaskReviews />}
+    </>
   );
 }
