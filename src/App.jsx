@@ -1447,8 +1447,8 @@ function TaskReviews() {
       <section className="shared-review-panel">
         <div className="shared-review-panel__intro">
           <div>
-            <p className="eyebrow">Shared review details</p>
-            <h2>Task information and quick verification</h2>
+            <p className="eyebrow">Task Information</p>
+            <h2>Review details</h2>
           </div>
         </div>
         <div className="review-detail-grid">
@@ -1459,28 +1459,14 @@ function TaskReviews() {
             <label className="review-field" key={key}><span>{label}</span><input type={type} value={details[key]} onChange={(event) => setDetails((current) => ({ ...current, [key]: event.target.value }))} /></label>
           ))}
         </div>
-        <div className="shared-check-grid">
-          {SHARED_REVIEW_GROUPS.map((group) => {
-            const domainMatchField = group.title === "Grounding Checks" ? (
-                <label className="domain-match-select">
-                  <span>Domain Match</span>
-                  <select value={details.domainMatch} onChange={(event) => setDetails((current) => ({ ...current, domainMatch: event.target.value }))}>
-                    <option value="">Select an option</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                    <option value="Unable to verify">Unable to verify</option>
-                  </select>
-                </label>
-            ) : null;
-            return <ReviewChecklist key={group.title} title={group.title} checks={group.checks} responseId="shared" values={checks} onToggle={toggleCheck} leadingContent={domainMatchField} />;
-          })}
-        </div>
       </section>
 
       <section className="template-panel">
         <div className="template-panel__intro">
-          <p className="eyebrow">Choose a template</p>
-          <h2>What type of artifact are you reviewing?</h2>
+          <div className="template-panel__heading">
+            <p className="eyebrow">Choose a template</p>
+            <h2>What type of artifact are you reviewing?</h2>
+          </div>
           <div className="template-settings">
             <label className="response-count-field">
               <span>Number of Responses</span>
@@ -1509,6 +1495,29 @@ function TaskReviews() {
         </div>
       </section>
 
+      <section className="quick-verification-panel">
+        <div className="quick-verification-panel__header">
+          <p className="eyebrow">Quick Verification</p>
+          <h2>Initial review checks</h2>
+        </div>
+        <div className="shared-check-grid">
+          {SHARED_REVIEW_GROUPS.map((group) => {
+            const domainMatchField = group.title === "Grounding Checks" ? (
+                <label className="domain-match-select">
+                  <span>Domain Match</span>
+                  <select value={details.domainMatch} onChange={(event) => setDetails((current) => ({ ...current, domainMatch: event.target.value }))}>
+                    <option value="">Select an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unable to verify">Unable to verify</option>
+                  </select>
+                </label>
+            ) : null;
+            return <ReviewChecklist key={group.title} title={group.title} checks={group.checks} responseId="shared" values={checks} onToggle={toggleCheck} leadingContent={domainMatchField} />;
+          })}
+        </div>
+      </section>
+
       <section className="response-panel">
         <div className="response-panel__top">
           <div><p className="eyebrow">{template.label} review</p><h2>Response {activeResponse}</h2></div>
@@ -1534,9 +1543,8 @@ function TaskReviews() {
 
       <section className="ranking-panel">
         <div><p className="eyebrow">Close out</p><h2>Overall Ranking</h2></div>
-        <div className="ranking-grid">
+        <div className="ranking-order-row">
           <label className="review-field"><span>Ranking order</span><input value={ranking} onChange={(event) => setRanking(event.target.value)} placeholder={`e.g. ${[...responseLabels].reverse().join(" > ")}`} /></label>
-          <CommentField label="Overall ranking comments" value={rankingComments} onChange={setRankingComments} placeholder="Explain placement, close calls, and evidence from the response rationales…" />
         </div>
         <div className="ranking-checks">
           {["Rankings are consistent with overall scores", "Ranking rationale justifies placement", "Ties or close calls are described", "Evidence from response rationales is cited"].map((check) => {
@@ -1544,6 +1552,7 @@ function TaskReviews() {
             return <label className="review-check" key={check}><input type="checkbox" checked={Boolean(checks[key])} onChange={() => toggleCheck(key)} /><span>{check}</span></label>;
           })}
         </div>
+        <CommentField label="Overall ranking comments" value={rankingComments} onChange={setRankingComments} placeholder="Explain placement, close calls, and evidence from the response rationales…" />
         <div className="review-actions">
           <div className="task-copy-action">
             <button className="button button--primary" onClick={copyReview} type="button">Copy Task Review</button>
